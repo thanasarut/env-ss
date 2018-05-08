@@ -1,0 +1,5 @@
+create primary index authenticate_index on authenticate;
+create primary index temporary_index on temporary;
+create primary index hotels_index on hotels;
+create primary index locations_index on locations;
+create primary index translation-index on ms_translations;
