@@ -2,3 +2,5 @@
 */*.iml
 target
 devops/couchbase/data/*
+devops/run.pid
+devops/source/backup-data
