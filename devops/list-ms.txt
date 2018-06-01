@@ -1,0 +1,6 @@
+ws-request-handler
+ms-auth
+ms-users
+ms-access-control
+ms-agents
+ms-hotels
