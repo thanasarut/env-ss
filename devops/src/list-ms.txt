@@ -1,6 +1,12 @@
-ws-request-handler
+ms-translations
 ms-auth
 ms-users
 ms-access-control
 ms-agents
 ms-hotels
+ws-request-handler
+ms-hotels-child-policy
+ms-hotels-cancellation-policy
+ms-hotels-minimum-night-stay
+ms-hotels-options
+ms-hotels-base-rates
