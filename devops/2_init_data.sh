@@ -1,17 +1,19 @@
 #!/bin/bash
 
-mkdir tmp
-cbq --script="select * from authenticate where meta().id = 'email::admin@sunseries.travel'" -engine http://couchbase.int.bkk1.sunseries.travel:8091 -u Administrator -p 090CE11ce | awk 'NR>3 {print}' | jq -c '.results[0].authenticate' > ./tmp/temp.json
+TEMP_PATH=./tmp
 
-echo 'insert into authenticate (key,value) values("email::admin@sunseries.travel",'$(cat ./tmp/temp.json)');' > ./tmp/init-data.n1ql
+mkdir ${TEMP_PATH}
+cbq --script="select * from authenticate where meta().id = 'email::admin@sunseries.travel'" -engine http://couchbase.int.bkk1.sunseries.travel:8091 -u Administrator -p 090CE11ce | awk 'NR>3 {print}' | jq -c '.results[0].authenticate' > ${TEMP_PATH}/temp.json
 
-cbq --script="select * from authenticate where meta().id = 'permission::vick.thanasarut@sunseries.travel'" -engine http://couchbase.int.bkk1.sunseries.travel:8091 -u Administrator -p 090CE11ce | awk 'NR>3 {print}' | jq -c '.results[0].authenticate' > ./tmp/temp.json
+echo 'insert into authenticate (key,value) values("email::admin@sunseries.travel",'`cat ${TEMP_PATH}/temp.json)`';' > ${TEMP_PATH}/init-data.n1ql
 
-echo 'insert into authenticate (key,value) values("permission::admin@sunseries.travel",'$(cat ./tmp/temp.json)');' >> ./tmp/init-data.n1ql
+cbq --script="select * from authenticate where meta().id = 'permission::vick.thanasarut@sunseries.travel'" -engine http://couchbase.int.bkk1.sunseries.travel:8091 -u Administrator -p 090CE11ce | awk 'NR>3 {print}' | jq -c '.results[0].authenticate' > ${TEMP_PATH}/temp.json
 
-rm ./tmp/temp.json
+echo 'insert into authenticate (key,value) values("permission::admin@sunseries.travel",'`cat ${TEMP_PATH}/temp.json`');' >> ${TEMP_PATH}/init-data.n1ql
 
-cbq -f ./tmp/init-data.n1ql -engine http://couchbase:8091 -u Administrator -p 090CE11ce
+rm ${TEMP_PATH}/temp.json
 
-rm ./tmp/init-data.n1ql
-rm -fr ./tmp
+cbq -f ${TEMP_PATH}/init-data.n1ql -engine http://couchbase:8091 -u Administrator -p 090CE11ce
+
+rm ${TEMP_PATH}/init-data.n1ql
+rm -fr ${TEMP_PATH}
