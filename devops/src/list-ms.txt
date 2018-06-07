@@ -10,3 +10,7 @@ ms-hotels-cancellation-policy
 ms-hotels-minimum-night-stay
 ms-hotels-options
 ms-hotels-base-rates
+ms-hotels-promotion-containers
+ms-hotels-search
+ms-hotels-compiler
+ms-hotels-itemizer
