@@ -3,4 +3,4 @@ create primary index temporary_index on temporary;
 create primary index hotels_index on hotels;
 create primary index locations_index on locations;
 create primary index markets_index on markets;
-create primary index translation-index on ms_translations;
+create primary index translation_index on ms_translations;
