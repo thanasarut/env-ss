@@ -1,0 +1,46 @@
+version: '2'
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    ports:
+      - '2181:2181'
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 10
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      MESSAGE_MAX_BYTES: 20000000
+      MAX_MESSAGE_BYTES: 20000000
+      FETCH_MESSAGE_MAX_BYTES: 20000000
+      MAX_REQUEST_SIZE: 20000000
+      REPLICA_FETCH_MAX_BYTES: 2000000
+    ports:
+      - '9092:9092'
+
+  redis:
+    container_name: redis
+    image: redis
+    ports:
+      - "6379:6379"
+
+  redis-6381:
+    container_name: redis-6381
+    image: redis
+    ports:
+      - "6381:6379"
+
+  couchbase-server:
+    container_name: couchbase
+    image: couchbase:4.5.0
+    volumes:
+      - ./couchbase/data:/opt/couchbase/var/lib/couchbase/data
+    ports:
+      - '8091-8094:8091-8094'
+      - '11210:11210'
