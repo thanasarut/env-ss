@@ -27,20 +27,14 @@ services:
   redis:
     container_name: redis
     image: redis
-    command: redis-server /usr/local/etc/redis/redis-6379.conf
-    volumes:
-      - ./src/redis-6379.conf:/usr/local/etc/redis/redis-6379.conf
     ports:
       - "6379:6379"
 
   redis-6381:
     container_name: redis-6381
     image: redis
-    command: redis-server /usr/local/etc/redis/redis-6381.conf
-    volumes:
-      - ./src/redis-6381.conf:/usr/local/etc/redis/redis-6381.conf
     ports:
-      - "6381:6381"
+      - "6381:6379"
 
   couchbase-server:
     container_name: couchbase
