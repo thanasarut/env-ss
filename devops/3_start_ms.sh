@@ -18,12 +18,21 @@ if [ $# -gt 0 ] && [ $1 -eq 1 ]; then
 fi
 
 for MS in `cat ${SRC}/list-ms.txt | grep -v "^#"`; do
-  if [ -e ${CURRENT_PATH}/${TEMP}/run.pid ] && [ `cat ${CURRENT_PATH}/${TEMP}/run.pid | cut -d' ' -f1 | grep -c $MS$ 2>/dev/null` -ne 0 ]; then
-      PID=`cat ${CURRENT_PATH}/${TEMP}/run.pid | awk '{print $0, $1}' | cut -d' ' -f2,3 | grep $MS$ | cut -d' ' -f1`
-      echo "==== ${MS} running with pid $PID"
+  if [ `ps -ef | grep jar$ | grep -c $MS` -eq 0 ]; then
+    cd ${MS_SRC_CODE_PATH}/$MS
+    nohup java -Xmx256m -jar target/*.jar > /dev/null 2>&1 &
+    if [ -e ${CURRENT_PATH}/${TEMP}/run.pid ]; then
+      OLD_PID=`cat ${CURRENT_PATH}/${TEMP}/run.pid | awk '/$MS / {print $2}'`
+      sed -i '' 's/ ${OLD_PID}$/ $!/g' ${CURRENT_PATH}/${TEMP}/run.pid
+    fi
+    echo "$MS $!" >> ${CURRENT_PATH}/${TEMP}/run.pid
+    echo "==== start java in background process for ${MS} $!"
+  elif [ -e ${CURRENT_PATH}/${TEMP}/run.pid ] && [ `cat ${CURRENT_PATH}/${TEMP}/run.pid | cut -d' ' -f1 | grep -c $MS$ 2>/dev/null` -ne 0 ]; then
+    PID=`cat ${CURRENT_PATH}/${TEMP}/run.pid | awk '{print $0, $1}' | cut -d' ' -f2,3 | grep $MS$ | cut -d' ' -f1`
+    echo "==== ${MS} running with pid $PID"
   elif [ ! -e ${CURRENT_PATH}/${TEMP}/run.pid ] || [ `cat ${CURRENT_PATH}/${TEMP}/run.pid | cut -d' ' -f1 | grep -c $MS$ 2>/dev/null` -eq 0 ]; then
-      cd ${MS_SRC_CODE_PATH}/$MS
-      nohup java -Xmx256m -jar target/*.jar > /dev/null 2>&1 & echo "$MS $!" >> ${CURRENT_PATH}/${TEMP}/run.pid
-      echo "==== start java in background process for ${MS} $!"
+    cd ${MS_SRC_CODE_PATH}/$MS
+    nohup java -Xmx256m -jar target/*.jar > /dev/null 2>&1 & echo "$MS $!" >> ${CURRENT_PATH}/${TEMP}/run.pid
+    echo "==== start java in background process for ${MS} $!"
   fi
 done
