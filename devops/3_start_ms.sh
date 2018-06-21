@@ -23,7 +23,7 @@ for MS in `cat ${SRC}/list-ms.txt | grep -v "^#"`; do
       echo "==== ${MS} running with pid $PID"
   elif [ ! -e ${CURRENT_PATH}/${TEMP}/run.pid ] || [ `cat ${CURRENT_PATH}/${TEMP}/run.pid | cut -d' ' -f1 | grep -c $MS$ 2>/dev/null` -eq 0 ]; then
       cd ${MS_SRC_CODE_PATH}/$MS
-      nohup java -jar target/*.jar > /dev/null 2>&1 & echo "$MS $!" >> ${CURRENT_PATH}/${TEMP}/run.pid
+      nohup java -Xmx256m -jar target/*.jar > /dev/null 2>&1 & echo "$MS $!" >> ${CURRENT_PATH}/${TEMP}/run.pid
       echo "==== start java in background process for ${MS} $!"
   fi
 done
