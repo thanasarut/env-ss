@@ -1,0 +1,9 @@
+#!/bin/bash
+
+alias less='less -R -S +F'
+export PATH=$PATH:/home/vick.thanasarut@corp.sunseries.travel/bin
+
+# put this in your .bash_profile
+if [ $ITERM_SESSION_ID ]; then
+  export PROMPT_COMMAND='echo -ne "\033];${HOSTNAME}:${PWD##*/}\007"; ':"$PROMPT_COMMAND";
+fi
